@@ -47,7 +47,6 @@ namespace TrueAquarius.TalkToJira
 
                 if (jiraResponse?.Issues != null)
                 {
-                    Console.WriteLine($"Found {jiraResponse.Issues.Count} tickets:\n");
                     issues.AddRange(jiraResponse.Issues);
                 }
                 return issues;

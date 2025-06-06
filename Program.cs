@@ -1,37 +1,26 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
-using OpenAI.Chat;
-using System.Text.Json;
+﻿using Azure.AI.OpenAI;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using System.Net;
-using Microsoft.Extensions.DependencyInjection;
+using OpenAI.Chat;
+
 
 namespace TrueAquarius.TalkToJira;
 
 
 public static class Program
 {
-    private static AzureOpenAIClient? azureClient;
-    //private static ChatClient? chatClient;
     private static Configuration config = Configuration.Instance;
-    //private static ChatCompletionOptions? chatOptions;
     private static ChatHistory history = new ChatHistory();
 
     // Define colors for different message types
     private const ConsoleColor UserColor = ConsoleColor.Cyan;
-    private const ConsoleColor BotColor = ConsoleColor.Green;
     private const ConsoleColor SystemColor = ConsoleColor.Yellow;
     private const ConsoleColor ErrorColor = ConsoleColor.Red;
     private const ConsoleColor InfoColor = ConsoleColor.White;
 
     public static async Task Main(string[] args)
     {
-        // Create Jira instance
-        //var jira = new JiraPlugin(config.Jira.BaseURL, config.Jira.Username, config.Jira.ApiToken);
-        //List<Issue> all = await jira.GetAllTicketsForProjectAsync(config.Jira.Project);
-
         // Replace with your own OpenAI API key and model  
         string? azureOpenAIAPIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
         string? azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
@@ -57,12 +46,9 @@ public static class Program
 
 
         var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+        
+        // Add Jira plugin to the kernel
         JiraPlugin jiraPlugin = new JiraPlugin(config.Jira.BaseURL, config.Jira.Username, config.Jira.ApiToken);
-
-        // Update the following line to fix the CS1501 error:  
-        // kernel.Plugins.AddFromObject<JiraPlugin>(jiraPlugin);  
-
-        // Correct usage of AddFromObject requires specifying both the plugin object and its name.  
         kernel.Plugins.AddFromObject(jiraPlugin, "Jira");
         
 
@@ -73,32 +59,15 @@ public static class Program
             Temperature = config.Temperature,
         };
 
-        
-#if false
-        azureClient = new(
-            new Uri(azureOpenAIEndpoint),
-            new AzureKeyCredential(azureOpenAIAPIKey));
-        
-        chatClient = azureClient.GetChatClient(config.DeploymentName);
 
-        // Set additional parameters such as temperature  
-        SetChatOptionsToCurrentConfiguration();
+        // Initialize History  
+        history.Clear();
+        history.AddSystemMessage(config.SystemPrompt);
 
-        // Start the Chat with the user  
-        Console.ForegroundColor = SystemColor;
-        Console.WriteLine("Welcome to the TrueAquarius ChatBot!\n" + BuildInfo.All + "\n");
 
-        ShowCurrentConfiguration();
-#endif
         Console.ForegroundColor = SystemColor;
         Console.WriteLine("\n========== start chatting with Jira now ===============");
         Console.WriteLine("Type '/help' for help. Type '/exit' or '/quit' to quit.\n");
-
-#if false
-        // Initialize History  
-        chatHistory.Clear();
-        chatHistory.Add(new SystemChatMessage(config.SystemPrompt));
-#endif
 
         while (true)
         {
@@ -119,7 +88,7 @@ public static class Program
             // Handle the command input by the user
             CommandType commandType = HandleCommand(userPrompt);
 
-            // Check if the command type is EXIT, if so, break the loop to exit the chat
+            // If the command type is EXIT, leave the loop to exit the chat
             if (commandType == CommandType.EXIT) break;
 
             switch (commandType)
@@ -145,9 +114,11 @@ public static class Program
 
             history.AddMessage(result.Role, result.Content ?? "");
 
+            CutChatHistory();
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nAI Agent:\n{result.Content}\n");
-
+            Console.WriteLine($"History: {history.Count}");
         }
 
         // Clean up, kiss and say bye bye

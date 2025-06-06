@@ -10,13 +10,13 @@ public static class BuildInfo
     /// The date and time when the build was created.
     /// Automatically updated by the build process.
     /// </summary>
-    public const string BuildDate = "06.06.2025 16:18 +02:00"; // DO NOT CHANGE THIS MANUALLY! This is automatically updated by the build process.
+    public const string BuildDate = "06.06.2025 18:11 +02:00"; // DO NOT CHANGE THIS MANUALLY! This is automatically updated by the build process.
 
     /// <summary>
     /// The build number of the application.
     /// Automatically updated by the build process.
     /// </summary>
-    public const int BuildNumber = 19; // DO NOT CHANGE THIS MANUALLY! This is automatically updated by the build process.
+    public const int BuildNumber = 25; // DO NOT CHANGE THIS MANUALLY! This is automatically updated by the build process.
 
     /// <summary>
     /// Version number of the application.
