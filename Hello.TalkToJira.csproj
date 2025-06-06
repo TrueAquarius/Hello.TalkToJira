@@ -11,7 +11,7 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
     <PackageReference Include="Azure.Core" Version="1.46.1" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.55.0" />
-    <PackageReference Include="TrueAquarius.ConfigManager" Version="1.0.0" />
+    <PackageReference Include="TrueAquarius.ConfigManager" Version="1.1.0" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(OS)' == 'Windows_NT'">

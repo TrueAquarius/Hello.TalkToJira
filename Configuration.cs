@@ -14,7 +14,7 @@ internal class Configuration : ConfigManager<Configuration>
     public int HistoryLength { get; set; } = 5;
     public float Temperature { get; set; } = 0.7f;
     public int MaxOutputTokenCount { get; set; } = 1000;
-    public string SystemPrompt { get; set; } = "You are a helpful assistant. Please answer the user's questions to the best of your ability.";
+    public string SystemPrompt { get; set; } = "You are an assistant who helps users of Jira with questions they have regarding Jira Tickets. Do not answer questions which are not related to tickets; say `Sorry, I cannot answer that question. I can only answer questions regarding Jira Tickets.'";
 
     public JiraConfiguration Jira { get; set; } = new JiraConfiguration();
 }
@@ -25,5 +25,4 @@ internal class JiraConfiguration
     public string BaseURL { get; set; }  = "<replace by your url>";
     public string ApiToken { get; set; } = "<replace by your token>";
     public string Username { get; set; } = "<replace by your username>";
-    public string Project { get; set; }  = "<replace by your project name>";
 }

@@ -3,7 +3,7 @@
 This is a simple command line Chatbot to talk to your Jira System.
 
 - <i>How many tickets are in Jira project ABCDEF?</i>
-- <i>Based on the ticket infomation which is available, what kind of system is this project building?</i>
+- <i>Based on the ticket information which is available, what kind of system is this project building?</i>
 
 Like all my "Hello"-projects, this is a "Hello World" version of a chatbot, meaning that it is meant to be an experiment and not meant to be for production.
 
@@ -16,7 +16,7 @@ Like all my "Hello"-projects, this is a "Hello World" version of a chatbot, mean
 ## Technology Stack
 - .Net 8
 - nuGet: Microsoft.SemanticKernel (Version 1.55.0)
-- nuGet: TrueAquarius.ConfigManager (Version 1.0.0)
+- nuGet: TrueAquarius.ConfigManager (Version 1.1.0)
 - nuGet: Azure.AI.OpenAI (Version 2.2.0-beta.4)
 - nuGet: Azure.Core (Version 1.46.1)
 - Jira
