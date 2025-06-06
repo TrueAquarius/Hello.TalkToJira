@@ -1,4 +1,5 @@
-﻿using Azure.AI.OpenAI;
+﻿using Azure;
+using Azure.AI.OpenAI;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -15,6 +16,7 @@ public static class Program
 
     // Define colors for different message types
     private const ConsoleColor UserColor = ConsoleColor.Cyan;
+    private const ConsoleColor BotColor = ConsoleColor.Green;
     private const ConsoleColor SystemColor = ConsoleColor.Yellow;
     private const ConsoleColor ErrorColor = ConsoleColor.Red;
     private const ConsoleColor InfoColor = ConsoleColor.White;
@@ -106,19 +108,29 @@ public static class Program
 
             history.AddUserMessage(userPrompt);
 
-            var result = await chatCompletionService.GetChatMessageContentAsync(
-                history,
-                executionSettings: settings,
-                kernel: kernel
-            );
+            var response = chatCompletionService.GetStreamingChatMessageContentsAsync(history, settings, kernel);
 
-            history.AddMessage(result.Role, result.Content ?? "");
+            Console.ForegroundColor = BotColor;
+            var botResponseBuilder = new System.Text.StringBuilder();
+
+            // Await foreach to iterate over the IAsyncEnumerable
+            await foreach (var update in response)
+            {
+                if (update is not null && update.Content is not null)
+                {
+                    foreach (var updatePart in update.Content)
+                    {
+                        Console.Write(updatePart); // Stream to console
+                        botResponseBuilder.Append(updatePart); // Build complete response
+                    }
+                }
+            }
+
+            System.Console.WriteLine("");
+
+            history.AddMessage(AuthorRole.Assistant, botResponseBuilder.ToString());
 
             CutChatHistory();
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\nAI Agent:\n{result.Content}\n");
-            Console.WriteLine($"History: {history.Count}");
         }
 
         // Clean up, kiss and say bye bye
