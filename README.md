@@ -23,6 +23,7 @@ Like all my "Hello"-projects, this is a "Hello World" version of a chatbot, mean
 
 ## Configuration
 
+- In order to connect to Jira, you will need a Personal Access Token (PAT). Once created, the PAT must be stored in the ```Configuration.json``` file. Please follow the instructions in [_Documents/HowToGetJiraToken.md](./_Documents/HowToGetJiraToken.md)
 
 
 ## How to use it
