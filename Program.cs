@@ -23,7 +23,7 @@ public static class Program
 
     public static async Task Main(string[] args)
     {
-        // Replace with your own OpenAI API key and model  
+        // Load Azure OpenAI Key and Endpoint from Environment variables  
         string? azureOpenAIAPIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
         string? azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 
@@ -36,6 +36,17 @@ public static class Program
             return;
         }
 
+        // Check if Jira Configuration is set up correctly
+        if (string.IsNullOrEmpty(config.Jira.BaseURL)
+            || Uri.TryCreate(config.Jira.BaseURL, UriKind.Absolute, out Uri? baseUri) == false
+            || string.IsNullOrEmpty(config.Jira.ApiToken)
+            || string.IsNullOrEmpty(config.Jira.Username))
+        {
+            Console.ForegroundColor = ErrorColor;
+            Console.WriteLine("Please set the Jira configuration in the configuration file.");
+            Console.ResetColor();
+            return;
+        }
 
         // Build and configure kernel  
         var builder = Kernel.CreateBuilder().AddAzureOpenAIChatCompletion(

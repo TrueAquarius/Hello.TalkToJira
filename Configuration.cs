@@ -11,8 +11,8 @@ namespace TrueAquarius.TalkToJira;
 internal class Configuration : ConfigManager<Configuration>
 {
     public string DeploymentName { get; set; } = "gpt-4o";
-    public int HistoryLength { get; set; } = 5;
-    public float Temperature { get; set; } = 0.7f;
+    public int HistoryLength { get; set; } = 10;
+    public float Temperature { get; set; } = 0.3f;
     public int MaxOutputTokenCount { get; set; } = 1000;
     public string SystemPrompt { get; set; } = "You are an assistant who helps users of Jira with questions they have regarding Jira Tickets. Do not answer questions which are not related to tickets; say `Sorry, I cannot answer that question. I can only answer questions regarding Jira Tickets.'";
 
@@ -22,7 +22,7 @@ internal class Configuration : ConfigManager<Configuration>
 
 internal class JiraConfiguration
 {
-    public string BaseURL { get; set; }  = "<replace by your url>";
-    public string ApiToken { get; set; } = "<replace by your token>";
-    public string Username { get; set; } = "<replace by your username>";
+    public string BaseURL { get; set; }  = "";
+    public string ApiToken { get; set; } = "";
+    public string Username { get; set; } = "";
 }
