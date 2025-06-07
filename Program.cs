@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using OpenAI.Chat;
+using System.Net;
 
 
 namespace TrueAquarius.TalkToJira;
@@ -48,11 +49,27 @@ public static class Program
             return;
         }
 
+        // Get Proxy Settings from Environment variables (optional)
+        string? httpProxyUrl = Environment.GetEnvironmentVariable("HTTP_PROXY");
+        
+        // Configure HttpClient with proxy  
+        var httpClientHandler = new HttpClientHandler
+        {
+            Proxy = new System.Net.WebProxy(httpProxyUrl),
+            UseProxy = !string.IsNullOrEmpty(httpProxyUrl)
+        };
+
+        var httpClient = new HttpClient(httpClientHandler)
+        {
+            BaseAddress = new Uri(azureOpenAIEndpoint)
+        };
+
         // Build and configure kernel  
         var builder = Kernel.CreateBuilder().AddAzureOpenAIChatCompletion(
            deploymentName: config.DeploymentName,
            endpoint: azureOpenAIEndpoint,
-           apiKey: azureOpenAIAPIKey
+           apiKey: azureOpenAIAPIKey,
+           httpClient: httpClient
         );
 
         var kernel = builder.Build();
