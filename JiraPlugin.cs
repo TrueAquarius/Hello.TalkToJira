@@ -66,7 +66,8 @@ namespace TrueAquarius.TalkToJira
         public async Task<List<Issue>> GetAllTicketsForProjectAsync([Description("This is the project key.")] string projectKey)
         {
             string jql = $"project={projectKey}";
-            return await ExecuteJQLAsync(jql);
+            var result = await ExecuteJQLAsync(jql);
+            return result;
         }
     }
 
@@ -98,6 +99,21 @@ namespace TrueAquarius.TalkToJira
 
         [JsonPropertyName("status")]
         public Status Status { get; set; }
+
+        [JsonPropertyName("assignee")]
+        public Assignee Assignee { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("issuetype")]
+        public IssueType IssueType { get; set; }
+    }
+
+    public class IssueType
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
     }
 
 
@@ -107,4 +123,14 @@ namespace TrueAquarius.TalkToJira
         [JsonPropertyName("name")]
         public string Name { get; set; }
     }
+
+    public class Assignee
+    {
+        [JsonPropertyName("displayName")]
+        public string DisplayName { get; set; }
+    }
+
 }
+
+
+
