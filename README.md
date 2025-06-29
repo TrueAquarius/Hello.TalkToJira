@@ -42,7 +42,8 @@ An example configuration file looks like this:
     "ApiToken": "replace by your jira access token",
     "Username": "replace by your emain address or user name"
   }
-}```
+}
+```
 
 ## How to use it
 Type any prompt and get an answer from Azure OpenAI.
