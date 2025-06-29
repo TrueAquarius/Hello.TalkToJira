@@ -32,7 +32,7 @@ public static class Program
             || string.IsNullOrEmpty(azureOpenAIEndpoint))
         {
             Console.ForegroundColor = ErrorColor;
-            Console.WriteLine("Please set relevant environment variables.");
+            Console.WriteLine("Please set relevant environment variables AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT.");
             Console.ResetColor();
             return;
         }

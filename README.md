@@ -28,6 +28,21 @@ Like all my "Hello"-projects, this is a "Hello World" version of a chatbot, mean
 - If you use a proxy to connect, set the environment variable ```HTTP_PROXY``` with the ProxyURL.
 - Check Configuration file for other settings. Configuration file is usually located in ```C:/Users/[User]/AppData/Roaming/TalkToJira/Configuration.json```.
 
+An example configuration file looks like this:
+
+```json
+{
+  "DeploymentName": "gpt-4o",
+  "HistoryLength": 10,
+  "Temperature": 0.3,
+  "MaxOutputTokenCount": 10000,
+  "SystemPrompt": "You are an assistant who helps users of Jira with questions they have regarding Jira Tickets. Do not answer questions which are not related to tickets; say \u0060Sorry, I cannot answer that question. I can only answer questions regarding Jira Tickets.\u0027",
+  "Jira": {
+    "BaseURL": "replace by your jira url",
+    "ApiToken": "replace by your jira access token",
+    "Username": "replace by your emain address or user name"
+  }
+}```
 
 ## How to use it
 Type any prompt and get an answer from Azure OpenAI.
